@@ -5,3 +5,6 @@ pycache/
 
 .vscode/
 .DS_Store
+
+.env
+database.db

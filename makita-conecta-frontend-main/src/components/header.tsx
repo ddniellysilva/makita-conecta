@@ -3,7 +3,9 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import MakitaLogo from "@/assets/makita-conecta-logo.svg"
 import { SessionContext } from "@/contexts/session"
-import UserMock from "/src/assets/user.svg" // mock atual
+import UserMock from "/src/assets/user.svg" 
+import { Profile } from "./profile"
+import { SearchBar } from "./search-bar"
 
 export function Header() {
   const [open, setOpen] = useState(false)
@@ -11,19 +13,25 @@ export function Header() {
 
   const dropdownRef = useRef<HTMLDivElement | null>(null)
   const buttonRef = useRef<HTMLButtonElement | null>(null)
+  const modalRef = useRef<HTMLDivElement | null>(null)
 
   function handleSignOut() {
     signOut()
     setOpen(false)
   }
 
-  // Fecha dropdown ao clicar fora
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
+      const path = event.composedPath()
+
+      if(modalRef.current && path.includes(modalRef.current)){
+        return 
+      }
+
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node) &&
-        !buttonRef.current?.contains(event.target as Node)
+        !buttonRef.current?.contains(event.target as Node) 
       ) {
         setOpen(false)
       }
@@ -43,12 +51,13 @@ export function Header() {
       className="sticky top-0 z-50 bg-white border-b border-gray-100"
       style={{ borderColor: "rgba(47, 27, 18, 0.1)" }}
     >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between relative">
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center relative">
         
         {/* LOGO */}
         <div className="flex items-center cursor-pointer group hover:opacity-80 transition-opacity">
           <img src={MakitaLogo} alt="Makita Conecta" className="h-10 w-auto" />
         </div>
+        <SearchBar />
 
         {/* LINKS DESKTOP */}
         <div className="hidden md:flex items-center gap-8">
@@ -60,13 +69,8 @@ export function Header() {
             Animais
           </a>
 
-          <a href="#sobre" className="text-sm font-medium hover:opacity-70" style={{ color: "var(--ink)" }}>
-            Sobre
-          </a>
-
-          {/* PERFIL SE LOGADO */}
-          {userLogged ? (
-            <div className="relative" ref={dropdownRef}>
+          
+            <div className="md:relative" ref={dropdownRef}>
               <button
                 ref={buttonRef}
                 onClick={() => setOpen(!open)}
@@ -91,10 +95,26 @@ export function Header() {
               </button>
 
               {/* DROPDOWN */}
-              {open && (
-                <div
+              
+            </div>
+      
+        </div>
+
+        {/* MENU MOBILE */}
+        <div className="md:hidden" ref={dropdownRef}>
+          <button
+            className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
+            style={{ backgroundColor: "var(--sky)", color: "var(--brand)" }}
+            onClick={()=>setOpen(!open)}
+            ref={buttonRef}
+          >
+            <span className="text-xl">≡</span>
+          </button>
+        </div>
+        {open && (
+                <div ref={dropdownRef}
                   className="
-                    absolute right-0 mt-3 w-48
+                    absolute right-2 top-12 mt-3 w-48
                     bg-white rounded-xl shadow-xl border
                     py-2 animate-fade-slide z-50
                   "
@@ -103,52 +123,17 @@ export function Header() {
                     boxShadow: "0 4px 12px rgba(47, 27, 18, 0.18)",
                   }}
                 >
-                  <a
-                    href="/perfil"
-                    className="block px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
-                    style={{ color: "var(--ink)" }}
-                  >
-                    Ir ao Perfil
-                  </a>
-
-                  <a
-                    href="/favoritos"
-                    className="block px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
-                    style={{ color: "var(--ink)" }}
-                  >
-                    Animais favoritos
-                  </a>
-
+                  <Profile buttonReference={buttonRef} modalReference={modalRef}/>
                   <button
+                    ref={buttonRef}
                     onClick={handleSignOut}
                     className="w-full text-left px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
                     style={{ color: "var(--accent)" }}
                   >
-                    Sign Out
+                    Sair
                   </button>
                 </div>
               )}
-            </div>
-          ) : (
-            <a
-              href="/signin"
-              className="px-5 py-2 rounded-lg font-medium text-white transition-all hover:shadow-lg hover:scale-105"
-              style={{ backgroundColor: "var(--accent)" }}
-            >
-              Entrar
-            </a>
-          )}
-        </div>
-
-        {/* MENU MOBILE */}
-        <div className="md:hidden">
-          <button
-            className="w-10 h-10 rounded-lg flex items-center justify-center transition-colors"
-            style={{ backgroundColor: "var(--sky)", color: "var(--brand)" }}
-          >
-            <span className="text-xl">≡</span>
-          </button>
-        </div>
       </nav>
 
       {/* ANIMAÇÃO DROPDOWN */}
@@ -161,6 +146,7 @@ export function Header() {
           animation: fadeSlide .22s ease-out;
         }
       `}</style>
+
     </header>
   )
 }
