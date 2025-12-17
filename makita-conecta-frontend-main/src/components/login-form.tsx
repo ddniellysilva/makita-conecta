@@ -79,12 +79,12 @@ export function LoginForm({
               <Field>
                 <div className="flex items-center">
                   <FieldLabel htmlFor="password">Password</FieldLabel>
-                  <a
-                    href="#"
+                  <NavLink
+                    to="/forget-my-password"
                     className="ml-auto text-sm underline-offset-2 hover:underline"
                   >
                     Esqueceu sua senha?
-                  </a>
+                  </NavLink>
                 </div>
                 <div className="flex flex-col gap-2">
                   <Input 

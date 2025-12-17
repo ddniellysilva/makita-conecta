@@ -1,10 +1,10 @@
-import { AnimalProfile } from "@/components/animal-profile";
+import { AnimalProfile as AnimalProfileComponent } from "@/components/animal-profile";
 
-export function AnimalProfileTela(){
+export function AnimalProfile(){
     return (
         <div className="bg-background flex min-h-svh flex-col p-0">
             <div className="w-full">
-                <AnimalProfile />
+                <AnimalProfileComponent />
             </div>
         </div>
     )
