@@ -1,5 +1,8 @@
 # Makita Conecta
 
+**Branch atual:** `main`  
+**Status:** Projeto principal e ativo
+
 Uma plataforma web para conectar quem quer adotar com protetores e ONGs. Nosso objetivo é simplificar o processo de adoção responsável, centralizando a busca por pets e dando mais visibilidade aos animais que precisam de um lar.
 
 ## 🐾 Problemática:
@@ -38,6 +41,18 @@ Antes de começar, garanta que você tenha os seguintes programas instalados:
 - Python (Versão 3.8 ou superior)
 - Node.js (Versão 18 ou superior, que inclui o npm)
 
+**Importante:** As funcionalidades de envio de email (recuperação de senha) requerem um arquivo `.env` na raiz do backend com as seguintes variáveis:
+
+```
+MAIL_SERVER=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USE_TLS=true
+MAIL_USERNAME=seu-email@gmail.com
+MAIL_PASSWORD=sua-senha-de-app
+SECRET_KEY=sua-chave-secreta-jwt
+```
+**Nota:** Este arquivo está listado no `.gitignore` por conter informações sensíveis e não está incluído no repositório. Crie este arquivo manualmente após clonar o projeto.
+
 Siga estes passos em ordem. Vamos começar ligando o "cérebro" (o backend) e depois a "face" (o frontend).
 
 ### Parte 1: Iniciar o Backend (API Flask)
@@ -67,10 +82,6 @@ Isso cria uma pasta venv que isola as dependências do Python.
 python -m venv venv
 ```
 
-
-
-
-
 #### 4. Ative o Ambiente Virtual:
 
 
@@ -82,28 +93,15 @@ Você precisa "ligar" o ambiente antes de instalar coisas nele.
 .\venv\Scripts\activate
 ```
 
-
-
-
-
 - No macOS / Linux:
 
 ```
 source venv/bin/activate
 ```
 
-
-
-
-
 - (Você saberá que funcionou se vir (venv) no início da linha do seu terminal).
 
-
-
-
-
 #### 5. Instale as Dependências do Python:
-
 
 Com o venv ativo, instale o Flask e os outros pacotes necessários.
 
@@ -120,7 +118,6 @@ python -m flask run
 ```
 
 (Se tudo der certo, o terminal vai "travar" e mostrar que está rodando em http://127.0.0.1:5000).
-
 
 DEIXE ESTE TERMINAL ABERTO! Se você fechá-lo, a API desliga.
 
@@ -174,4 +171,5 @@ Agora, você pode:
 3. Tentar criar uma nova conta e fazer login.
 
 O site (Frontend) irá automaticamente enviar as requisições para a API (Backend) que está rodando na porta 5000.
+
 
